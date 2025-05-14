@@ -1,0 +1,116 @@
+// Startup Miracle – Custom n8n Chat Widget Embed
+(function () {
+  const styles = `
+    .sm-powered-by {
+      display: block;
+      text-align: center;
+      font-size: 12px;
+      padding: 8px;
+      color: #999;
+      font-family: sans-serif;
+    }
+    .sm-powered-by a {
+      color: #854fff;
+      text-decoration: none;
+    }
+  `;
+
+  const styleSheet = document.createElement('style');
+  styleSheet.textContent = styles;
+  document.head.appendChild(styleSheet);
+
+  const script = document.createElement('script');
+  script.type = 'module';
+  script.src = 'https://cdn.n8nchatui.com/v1/embed.js';
+
+  script.onload = () => {
+    import('https://cdn.n8nchatui.com/v1/embed.js').then(({ default: Chatbot }) => {
+      Chatbot.init({
+        n8nChatUrl: 'https://n8n.srv821024.hstgr.cloud/webhook/46ea0fc1-9d73-4c5a-9aa6-cd5871878dd6/chat',
+        theme: {
+          button: {
+            backgroundColor: '#d3b136',
+            right: 20,
+            bottom: 20,
+            size: 50,
+            iconColor: '#373434',
+            customIconSrc: 'https://www.svgrepo.com/show/339963/chat-bot.svg',
+            customIconSize: 60,
+            customIconBorderRadius: 15,
+            autoWindowOpen: {
+              autoOpen: false,
+              openDelay: 2
+            },
+            borderRadius: 'circle'
+          },
+          tooltip: {
+            showTooltip: true,
+            tooltipMessage: '👋 Need a Free Estimate?',
+            tooltipBackgroundColor: '#dae7d0',
+            tooltipTextColor: '#1c1c1c',
+            tooltipFontSize: 15
+          },
+          chatWindow: {
+            borderRadiusStyle: 'rounded',
+            avatarBorderRadius: 25,
+            messageBorderRadius: 6,
+            showTitle: true,
+            title: 'Not Just Carpet | Bot',
+            titleAvatarSrc: 'https://www.svgrepo.com/show/339963/chat-bot.svg',
+            welcomeMessage: "Hi 👋 I'm Natalia, your virtual assistant. How can I help you today?",
+            errorMessage: 'Oops! Help is coming your way',
+            backgroundColor: '#f2f2f2',
+            height: 600,
+            width: 400,
+            fontSize: 16,
+            starterPrompts: [
+              'I need a Free Estimate',
+              'Service Areas'
+            ],
+            starterPromptFontSize: 15,
+            clearChatOnReload: false,
+            botMessage: {
+              backgroundColor: '#747b7b',
+              textColor: '#fafafa',
+              showAvatar: true,
+              avatarSrc: 'https://www.svgrepo.com/show/334455/bot.svg'
+            },
+            userMessage: {
+              backgroundColor: '#fff6f3',
+              textColor: '#050505',
+              showAvatar: true,
+              avatarSrc: 'https://www.svgrepo.com/show/532363/user-alt-1.svg'
+            },
+            textInput: {
+              placeholder: 'Type your message in 🇺🇸 or 🇪🇸',
+              backgroundColor: '#ffffff',
+              textColor: '#1e1e1f',
+              sendButtonColor: '#0e9504',
+              maxChars: 50,
+              maxCharsWarningMessage: 'You exceeded the characters limit. Please input less than 50 characters.',
+              autoFocus: false,
+              borderRadius: 16,
+              sendButtonBorderRadius: 50
+            }
+          }
+        }
+      });
+
+      // Append Startup Miracle footer
+      const footer = document.createElement('div');
+      footer.className = 'sm-powered-by';
+      footer.innerHTML = '<a href="https://lp.startupmiracle.com/" target="_blank">powered by Startup Miracle</a>';
+
+      const observer = new MutationObserver(() => {
+        const root = document.querySelector('n8n-chat-widget');
+        if (root && root.shadowRoot && !root.shadowRoot.querySelector('.sm-powered-by')) {
+          root.shadowRoot.appendChild(footer);
+        }
+      });
+
+      observer.observe(document.body, { childList: true, subtree: true });
+    });
+  };
+
+  document.body.appendChild(script);
+})();
